@@ -1,6 +1,11 @@
-const express = require('express')
-const path = require('path')
-const posts = require('./routes/post')
+// const express = require('express')
+import express from 'express'
+// const path = require('path')
+import path from 'path'
+// const posts = require('./routes/post')
+import posts from './routes/post.js'
+
+
 const port = process.env.PORT || 5000
 
 
