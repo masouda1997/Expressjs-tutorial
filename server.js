@@ -17,11 +17,11 @@ const __dirname = dirname(__filename);
 
 const port = process.env.PORT || 5000
 
+
+const app = express()
 // body parser middleware
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
-
-const app = express()
 
 app.get('/a' , (req,res)=>{
    res.send('hello backend and API')

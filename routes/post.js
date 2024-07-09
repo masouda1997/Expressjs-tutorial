@@ -65,12 +65,27 @@ router.get('/:id' , (req,res)=>{
    res.status(200).json(post)
 })
 
-// create new post
+// create new post - the route is api/posts
 router.post('/', (req,res)=>{
-	console.log(req.body);
+	const newPost = {
+		id:posts.length+1,
+		title:req.body.title,
+		body:req.body.body,
+		author:req.body.author,
+		date:req.body.date
+	}
+	console.log("dfdf");
+	
+	if(!newPost.title || !newPost.author || !newPost.body || !newPost.date ){
+		return res.status(400).json({msg: 'something is missing , check your data '})
+	}
+	posts.push(newPost)
 	res.status(201).json(posts)
 	
 })
+
+
+
 
 // module.exports = router
 export default router
