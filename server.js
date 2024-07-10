@@ -7,6 +7,7 @@ import posts from './routes/post.js'
 // es modules
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import logger from './middleware/logger.js';
 
 
 
@@ -22,6 +23,8 @@ const app = express()
 // body parser middleware
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
+// adding logger middleware
+app.use(logger)
 
 app.get('/a' , (req,res)=>{
    res.send('hello backend and API')
