@@ -8,6 +8,7 @@ import posts from './routes/post.js'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import logger from './middleware/logger.js';
+import errorHandler from './middleware/error.js';
 
 
 
@@ -44,5 +45,7 @@ app.use(express.static(path.join(__dirname , 'public'))) // run every thing in p
 
 // Router 
 app.use('/api/posts',posts)
+// Error middleware should be here after top function
+app.use(errorHandler)
 
 app.listen(port , ()=>console.log(`server is running on port ${port}`))

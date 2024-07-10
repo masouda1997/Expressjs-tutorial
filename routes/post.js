@@ -41,7 +41,7 @@ let posts = [
 
 
 router.get('/' , (req,res)=>{
-   // add limit 
+   // add limit by add ? ti the url
    const limit  = parseInt(req.query.limit)
    
    // not clean
@@ -57,16 +57,20 @@ router.get('/' , (req,res)=>{
 })
 
 
-// single product
-router.get('/:id' , (req,res)=>{
+// single post
+router.get('/:id' , (req,res , next)=>{
    // res.status(200).json(posts.filter(post=> post.id === parseInt(req.params.id)))
    const post = posts.find(post=>post.id === parseInt(req.params.id))
-   if(!post) return res.status(404).json({message : `There is no post with id ${req.params.id}`})
+   if(!post) {
+		const error = new Error(`no post with id ${req.params.id } found`)
+		error.status = 404
+		return next(error)
+	}
    res.status(200).json(post)
 })
 
 // create new post - the route is api/posts
-router.post('/', (req,res)=>{
+router.post('/', (req,res, next)=>{
 	const newPost = {
 		id:posts.length+1,
 		title:req.body.title,
@@ -76,7 +80,9 @@ router.post('/', (req,res)=>{
 	}
 	
 	if(!newPost.title || !newPost.author || !newPost.body || !newPost.date ){
-		return res.status(400).json({msg: 'something is missing , check your data '})
+		const error = new Error('something is missing , check your data ')
+		error.status = 400
+		return next(error)
 	}
 	posts.push(newPost)
 	res.status(201).json(posts)
@@ -84,9 +90,14 @@ router.post('/', (req,res)=>{
 })
 
 //update posts
-router.put('/:id', (req,res)=>{
+router.put('/:id', (req,res ,next)=>{
 	const post = posts.find(post=> post.id === parseInt(req.params.id))
-	if(!post)return res.status(404).json({msg:`no post with the id ${req.params.id} found`})
+	if(!post){
+		const error = new Error(`no post with id ${req.params.id} found `)
+		error.status = 404
+		return next(error)
+		// return res.status(404).json({msg:`no post with the id ${req.params.id} found`})
+	}
 	post.title = req.body.title
 	post.body = req.body.body
 	post.author = req.body.author
@@ -95,9 +106,14 @@ router.put('/:id', (req,res)=>{
 })
 
 // delete post
-router.delete('/:id' , (req,res)=>{
+router.delete('/:id' , (req,res,next)=>{
 	const post = posts.find(post=> post.id ===  parseInt(req.params.id))
-	if(!post) res.status(404).json({msg:`no post with id ${req.params.id} found `})
+	if(!post){ 
+		const error = new Error(`no post with id ${req.params.id} found `)
+		error.status = 404
+		return next(error)
+		// res.status(404).json({msg:`no post with id ${req.params.id} found `})
+	}
 	posts = posts.filter(post => post.id !== parseInt(req.params.id))
 	res.status(200).json(posts)
 })
