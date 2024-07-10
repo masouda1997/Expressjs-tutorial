@@ -1,7 +1,7 @@
 // const express = require('express')
 import express from 'express'
 const router = express.Router()
-const posts = [
+let posts = [
 	{
 		id: 1,
 		title: "Introduction to Node.js",
@@ -74,7 +74,6 @@ router.post('/', (req,res)=>{
 		author:req.body.author,
 		date:req.body.date
 	}
-	console.log("dfdf");
 	
 	if(!newPost.title || !newPost.author || !newPost.body || !newPost.date ){
 		return res.status(400).json({msg: 'something is missing , check your data '})
@@ -84,6 +83,24 @@ router.post('/', (req,res)=>{
 	
 })
 
+//update posts
+router.put('/:id', (req,res)=>{
+	const post = posts.find(post=> post.id === parseInt(req.params.id))
+	if(!post)return res.status(404).json({msg:`no post with the id ${req.params.id} found`})
+	post.title = req.body.title
+	post.body = req.body.body
+	post.author = req.body.author
+	post.date = req.body.date
+	res.status(200).json(posts)
+})
+
+// delete post
+router.delete('/:id' , (req,res)=>{
+	const post = posts.find(post=> post.id ===  parseInt(req.params.id))
+	if(!post) res.status(404).json({msg:`no post with id ${req.params.id} found `})
+	posts = posts.filter(post => post.id !== parseInt(req.params.id))
+	res.status(200).json(posts)
+})
 
 
 
