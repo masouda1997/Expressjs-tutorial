@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import logger from './middleware/logger.js';
 import errorHandler from './middleware/error.js';
+import notFound from './middleware/notFound.js';
 
 
 
@@ -45,6 +46,8 @@ app.use(express.static(path.join(__dirname , 'public'))) // run every thing in p
 
 // Router 
 app.use('/api/posts',posts)
+
+app.use(notFound)
 // Error middleware should be here after top function
 app.use(errorHandler)
 
