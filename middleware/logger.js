@@ -1,8 +1,6 @@
 import colors from 'colors'
 
 
-
-
 const logger = (req, res , next)=>{
    const methodColors = {
       GET:'green',
