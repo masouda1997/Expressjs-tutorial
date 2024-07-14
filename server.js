@@ -12,14 +12,9 @@ import errorHandler from './middleware/error.js';
 import notFound from './middleware/notFound.js';
 
 
-
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-
 const port = process.env.PORT || 5000
-
 
 const app = express()
 // body parser middleware
@@ -40,15 +35,13 @@ app.get('/c' , (req,res)=>{
 app.get('/d' , (req,res)=>{
    res.sendFile(path.join(__dirname , 'public','index.html'))
 })
-
 // setup static folder
 app.use(express.static(path.join(__dirname , 'public'))) // run every thing in public
-
 // Router 
 app.use('/api/posts',posts)
-
 app.use(notFound)
 // Error middleware should be here after top function
 app.use(errorHandler)
+
 
 app.listen(port , ()=>console.log(`server is running on port ${port}`))
